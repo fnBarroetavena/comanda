@@ -1,0 +1,31 @@
+{
+    "usuario": {
+        "id": "int", //auto
+        "nombre": "string",
+        "tipo": "string", //["mozo", "bartender", "cervecero", "cocinero", "socio"]
+        "estado?": "string" //["ocupado", "desocupado"]
+    },
+    "producto": {
+        "id": "int", //auto
+        "tipo": "string", //["bebida", "comida"]
+        "nombre": "string" //["vino", "cerveza", "empanadas", etc...]
+    },
+    "mesa": {
+        "id": "int", //auto
+        "estado": "string", //["con cliente esperando pedido", "con cliente comiendo", "con cliente pagando", "cerrada"],
+        "foto?": "img",
+        "cuenta": "doble"
+    },
+    "pedido": {
+        "id": "int", //auto
+        "idUsuario": "int",
+        "idMesa": "int",
+        "idProducto": "int",
+        "nombreCliente": "string",
+        "estado": "string", //["pendiente", "en preparacion", "listo para servir", "entregado", "cancelado"]
+        "cantidad": "int",
+        "horaInicio": "date",
+        "entregaEstimada": "date",
+        "horaEntrega": "date"
+    }
+}
