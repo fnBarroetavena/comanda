@@ -1,35 +1,23 @@
 <?php
-// "pedido": {
-//     "id": "int", //auto
-//     "idUsuario": "int",
-//     "idMesa": "int",
-//     "idProducto": "int",
-//     "nombreCliente": "string",
-//     "estado": "string", //["pendiente", "en preparacion", "listo para servir", "entregado", "cancelado"]
-//     "cantidad": "int",
-//     "horaInicio": "date",
-//     "entregaEstimada": "date",
-//     "horaEntrega": "date"
-// }
-class Usuario{
+include_once __DIR__ . "/../../db/AccesoDatos.php";
+
+class Pedido implements JsonSerializable{
   private $id;
   private $idUsuario;
   private $idMesa;
   private $idProducto;
-  private $nombreCliente;
   private $estado;
   private $cantidad;
   private $horaInicio;
   private $entregaEstimada;
   private $horaEntrega;
   
-  public function __construct($id, $idUsuario, $idMesa, $idProducto, $nombreCliente, $estado, $cantidad, $horaInicio, $entregaEstimada, $horaEntrega)
+  public function __construct($idUsuario, $idMesa, $idProducto, $estado, $cantidad, $horaInicio, $entregaEstimada, $horaEntrega, $id = null)
   {
     $this->id = $id;
     $this->idUsuario = $idUsuario;
     $this->idMesa = $idMesa;
     $this->idProducto = $idProducto;
-    $this->nombreCliente = $nombreCliente;
     $this->estado = $estado;
     $this->cantidad = $cantidad;
     $this->horaInicio = $horaInicio;
@@ -67,14 +55,6 @@ class Usuario{
 
   public function SetidProducto($idProducto){
     $this->idProducto = $idProducto;
-  }
-
-  public function GetnombreCliente(){
-    return $this->nombreCliente;
-  }
-
-  public function SetnombreCliente($nombreCliente){
-    $this->nombreCliente = $nombreCliente;
   }
 
   public function Getestado(){
@@ -115,5 +95,37 @@ class Usuario{
 
   public function SethoraEntrega($horaEntrega){
     $this->horaEntrega = $horaEntrega;
+  }
+
+  public static function TraerTodos()
+  {
+    $accesoDatos = AccesoDatos::dameUnObjetoAcceso();
+    $consulta = $accesoDatos->RetornarConsulta("SELECT * FROM usuario;");
+    $consulta->execute();
+    $consulta->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, __CLASS__, array("idUsuario", "idMesa", "idProducto", "nombreCliente", "estado", "cantidad", "horaInicio", "entregaEstimada", "horaEntrega", "id"));
+    return $consulta->fetchAll();
+  }
+
+  public function Insertar()
+  {
+    $accesoDatos = AccesoDatos::dameUnObjetoAcceso();
+    $consulta = $accesoDatos->RetornarConsulta("INSERT INTO usuario(idUsuario, idMesa, idProducto, nombreCliente, estado, cantidad, horaInicio, entregaEstimada, horaEntrega)
+        VALUES(:idUsuario, :idMesa, :idProducto, :nombreCliente, :estado, :cantidad, :horaInicio, :entregaEstimada, :horaEntrega)");
+    $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
+    $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
+    $consulta->bindValue(':idProducto', $this->idProducto, PDO::PARAM_INT);
+    $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
+    $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_STR);
+    $consulta->bindValue(':horaInicio', $this->horaInicio, PDO::PARAM_STR);
+    $consulta->bindValue(':entregaEstimada', $this->entregaEstimada, PDO::PARAM_STR);
+    $consulta->bindValue(':horaEntrega', $this->horaEntrega, PDO::PARAM_STR);
+
+    $consulta->execute();
+    return $accesoDatos->RetornarUltimoIdInsertado();
+  }
+
+  public function jsonSerialize()
+  {
+    return get_object_vars($this);
   }
 }

@@ -2,9 +2,11 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require_once '../vendor/autoload.php';
-require_once '../sprint1/clases/UsuarioApi.php';
-
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/sprint1/clases/UsuarioApi.php';
+require_once __DIR__ . '/sprint1/clases/ProductoApi.php';
+require_once __DIR__ . '/sprint1/clases/MesaApi.php';
+require_once __DIR__ . '/sprint1/clases/PedidoApi.php';
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
@@ -26,23 +28,23 @@ $app->get('/', function() {echo "Bienvenido a 'La Comanda'.";});
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 $app->group('/usuario', function () {
-    $this->get('[/]', \UsuarioApi::class . ':traerUsuarios');
-    $this->post('[/]', \UsuarioApi::class . ':insertUsuario');
+    $this->get('[/]', \UsuarioApi::class . ':TraerTodos');
+    $this->post('[/]', \UsuarioApi::class . ':Insertar');
 });
 
 $app->group('/producto', function () {
-    $this->get('[/]', \UsuarioApi::class . ':traerUsuarios');
-    $this->post('[/]', \UsuarioApi::class . ':insertUsuario');
+    $this->get('[/]', \ProductoApi::class . ':TraerTodos');
+    $this->post('[/]', \ProductoApi::class . ':Insertar');
 });
 
 $app->group('/mesa', function () {
-    $this->get('[/]', \UsuarioApi::class . ':traerUsuarios');
-    $this->post('[/]', \UsuarioApi::class . ':insertUsuario');
+    $this->get('[/]', \MesaApi::class . ':TraerTodos');
+    $this->post('[/]', \MesaApi::class . ':Insertar');
 });
 
 $app->group('/pedido', function () {
-    $this->get('[/]', \UsuarioApi::class . ':traerUsuarios');
-    $this->post('[/]', \UsuarioApi::class . ':insertUsuario');
+    $this->get('[/]', \PedidoApi::class . ':TraerTodos');
+    $this->post('[/]', \PedidoApi::class . ':Insertar');
 });
 
 $app->run();
