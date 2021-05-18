@@ -6,7 +6,7 @@ class Producto implements JsonSerializable{
     private $nombre;
     private $tipo;
     
-    public function __construct($id, $nombre, $tipo)
+    public function __construct($nombre, $tipo, $id = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -49,7 +49,7 @@ class Producto implements JsonSerializable{
     public function Insertar()
     {
       $accesoDatos = AccesoDatos::dameUnObjetoAcceso();
-      $consulta = $accesoDatos->RetornarConsulta("INSERT INTO usuario(nombre,tipo)
+      $consulta = $accesoDatos->RetornarConsulta("INSERT INTO producto(nombre,tipo)
           VALUES(:nombre,:tipo)");
       $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
       $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);

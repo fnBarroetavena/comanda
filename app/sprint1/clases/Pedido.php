@@ -100,17 +100,17 @@ class Pedido implements JsonSerializable{
   public static function TraerTodos()
   {
     $accesoDatos = AccesoDatos::dameUnObjetoAcceso();
-    $consulta = $accesoDatos->RetornarConsulta("SELECT * FROM usuario;");
+    $consulta = $accesoDatos->RetornarConsulta("SELECT * FROM pedido;");
     $consulta->execute();
-    $consulta->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, __CLASS__, array("idUsuario", "idMesa", "idProducto", "nombreCliente", "estado", "cantidad", "horaInicio", "entregaEstimada", "horaEntrega", "id"));
+    $consulta->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, __CLASS__, array("idUsuario", "idMesa", "idProducto", "estado", "cantidad", "horaInicio", "entregaEstimada", "horaEntrega", "id"));
     return $consulta->fetchAll();
   }
 
   public function Insertar()
   {
     $accesoDatos = AccesoDatos::dameUnObjetoAcceso();
-    $consulta = $accesoDatos->RetornarConsulta("INSERT INTO usuario(idUsuario, idMesa, idProducto, nombreCliente, estado, cantidad, horaInicio, entregaEstimada, horaEntrega)
-        VALUES(:idUsuario, :idMesa, :idProducto, :nombreCliente, :estado, :cantidad, :horaInicio, :entregaEstimada, :horaEntrega)");
+    $consulta = $accesoDatos->RetornarConsulta("INSERT INTO pedido(idUsuario, idMesa, idProducto, estado, cantidad, horaInicio, entregaEstimada, horaEntrega)
+        VALUES(:idUsuario, :idMesa, :idProducto, :estado, :cantidad, :horaInicio, :entregaEstimada, :horaEntrega)");
     $consulta->bindValue(':idUsuario', $this->idUsuario, PDO::PARAM_INT);
     $consulta->bindValue(':idMesa', $this->idMesa, PDO::PARAM_INT);
     $consulta->bindValue(':idProducto', $this->idProducto, PDO::PARAM_INT);
